@@ -1,0 +1,9 @@
+.mainaparcamientos {
+    top: 64px;
+    position: absolute;
+  }
+
+.cardsType{
+    height: 210px;
+    max-height: 250px;
+}
