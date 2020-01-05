@@ -2,6 +2,16 @@ import React, { Component } from 'react';
 import data from './data/file.js';
 import { Card, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
 import "./css/MainAparcamientos.css"
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useHistory,
+  useLocation,
+  useParams
+} from "react-router-dom";
+import ParkingView from './ParkingView.js';
 
 const aparcamientos = data.item
 
@@ -11,27 +21,46 @@ const cardsStyle = {
   // maxHeight: '220px'
 };
 
+export default function MainAparcamientos() {
+  return (
+    <Router>
+      <ModalSwitch />
+    </Router>
+  );
+}
 
+function ModalSwitch() {
+  let location = useLocation();
 
-export default class MainAparcamientos extends Component {
+  let background = location.state && location.state.background;
 
-  constructor(){
-    super()
-  }
-  render() {
-    return (
+  return (
+    <div>
+      <Switch location={background || location}>
+        <Route exact path="/" children={<Home />} />
+        <Route path="/parking/:id" children={<ParkingView />} />
+      </Switch>
+
+      {/* Show the modal when a background page is set */}
+      {/* {background && <Route path="/parking/:id" children={<Modal />} />} */}
+    </div>
+  );
+}
+
+function Home() {
+  return (
     <Row className="mainaparcamientos">
-      {aparcamientos.map( element => (
+      {aparcamientos.map(element => (
         <Col sm="3" key={element.PK}>
           <Card className="cardsType" body>
             <CardTitle>{element.NOMBRE}</CardTitle>
             <CardText>{element.DIRECCION}</CardText>
             <CardText>{element.BARRIO}, {element.DISTRITO}</CardText>
-            <Button>Go somewhere</Button>
+            <Link to={`/parking/${element.PK}`}> <Button >See on map</Button> </Link>
           </Card>
         </Col>
-        ))}
+      ))}
     </Row>
-    )
-  }
+  )
 }
+
