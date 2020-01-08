@@ -27,13 +27,13 @@ const topbarStyle = {
           {/* <Collapse isOpen={isOpen} navbar> */}
             <Nav className="mr-auto" navbar>
               <NavItem>
-                Distritos
+                {/* <link to="/district"> By District </link> */}
               </NavItem>
               <NavItem>
                 {/* <NavLink href="https://github.com/reactstrap/reactstrap">GitHub</NavLink> */}
               </NavItem>
             </Nav>
-            <NavbarText>Aparcamientos Madrid</NavbarText>
+            <NavbarText>Madrid Parkings</NavbarText>
           {/* </Collapse> */}
         </Navbar>
       // </div>

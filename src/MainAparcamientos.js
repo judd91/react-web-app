@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import data from './data/file.js';
 import { Card, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
 import "./css/MainAparcamientos.css"
@@ -7,19 +7,12 @@ import {
   Switch,
   Route,
   Link,
-  useHistory,
   useLocation,
-  useParams
 } from "react-router-dom";
 import ParkingView from './ParkingView.js';
+import ParkingsTree from './ParkingsTree.js';
 
 const aparcamientos = data.item
-
-const cardsStyle = {
-  height: '220',
-  // minHeight: '220px',
-  // maxHeight: '220px'
-};
 
 export default function MainAparcamientos() {
   return (
@@ -38,6 +31,7 @@ function ModalSwitch() {
     <div>
       <Switch location={background || location}>
         <Route exact path="/" children={<Home />} />
+        <Route path="/districts" children={<ParkingsTree />} />
         <Route path="/parking/:id" children={<ParkingView />} />
       </Switch>
 
@@ -49,18 +43,22 @@ function ModalSwitch() {
 
 function Home() {
   return (
-    <Row className="mainaparcamientos">
-      {aparcamientos.map(element => (
-        <Col sm="3" key={element.PK}>
-          <Card className="cardsType" body>
-            <CardTitle>{element.NOMBRE}</CardTitle>
-            <CardText>{element.DIRECCION}</CardText>
-            <CardText>{element.BARRIO}, {element.DISTRITO}</CardText>
-            <Link to={`/parking/${element.PK}`}> <Button >See on map</Button> </Link>
-          </Card>
-        </Col>
-      ))}
-    </Row>
+    <div className="mainaparcamientos">
+      <Link to="/districts"> <Button >By Districts</Button> </Link>
+
+      <Row >
+        {aparcamientos.map(element => (
+          <Col xs="5" sm="4" md="3" key={element.PK}>
+            <Card className="cardsType" body>
+              <CardTitle>{element.NOMBRE}</CardTitle>
+              <CardText>{element.DIRECCION}</CardText>
+              <CardText>{element.BARRIO}, {element.DISTRITO}</CardText>
+              <Link to={`/parking/${element.PK}`}> <Button >See on map</Button> </Link>
+            </Card>
+          </Col>
+        ))}
+      </Row>
+    </div>
   )
 }
 

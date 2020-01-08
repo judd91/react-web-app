@@ -1,9 +1,21 @@
 .mainaparcamientos {
     top: 64px;
     position: absolute;
+    width: 100%;
   }
 
 .cardsType{
     height: 210px;
     max-height: 250px;
+    box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.5);
+    transition: 0.3s;
+    margin: 2% 2% 2% 2%;
+    background: radial-gradient(circle, rgba(226,233,231,1) 0%, rgba(16,88,120,0.9) 100%);
+    min-height: 200px;
+}
+
+.row{
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  margin-bottom: 80px;
 }
