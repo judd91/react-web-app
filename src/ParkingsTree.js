@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
-import data from './data/file2.js'
+import data from './data/treeData.js'
 import "./css/ParkingsTree.css"
 
 export default class ParkingsTree extends Component {
@@ -10,9 +10,9 @@ export default class ParkingsTree extends Component {
   }
 
   drawTree() {
-    var margin = { top: 100, right: 10, bottom: 240, left: 10 },
-      width = 340 - margin.left - margin.right,
-      height = 600 - margin.top - margin.bottom;
+    var margin = { top: 200, right: 20, bottom: 480, left: 20 },
+      width = 1500 - margin.left - margin.right,
+      height = 680 ;
 
     var orientations = {
       "top-to-bottom": {
@@ -22,7 +22,7 @@ export default class ParkingsTree extends Component {
       }
     }
 
-    console.log(data)
+    // console.log(data)
     const svg = d3.select(this.refs.myDiv)
       .selectAll("svg")
       .data(d3.entries(orientations))
@@ -30,16 +30,20 @@ export default class ParkingsTree extends Component {
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
       .append("g")
-      .attr("transform", "translate(" + margin.top + "," + (height + margin.top) + ")");
+      .attr("transform", "translate(" + (width - margin.bottom - 680) + "," + (height + margin.top) + ")");
 
     svg.each(function (orientation) {
       var svg = d3.select(this),
         o = orientation.value;
 
-      // Compute the layout.
+
       var treemap = d3.tree().size(o.size);
 
-      var nodes = d3.hierarchy(data);
+      var nodes = d3.hierarchy(data, function(d) {
+        return d.children;
+      });
+      // console.log(nodes)
+
       nodes = treemap(nodes);
       var links = nodes.descendants().slice(1);
       svg.selectAll(".link")
@@ -56,6 +60,7 @@ export default class ParkingsTree extends Component {
         .data(nodes.descendants())
         .enter()
         .append("g")
+        // console.log(node)
       node.append("circle")
         .attr("class", "node")
         .attr("r", 4.5)
@@ -64,11 +69,11 @@ export default class ParkingsTree extends Component {
 
 
       node.append("text")
-        .text(function (d) { return d.data.name; })
+        .text(function (d) { return d.data.name ; })
         .attr("x", o.x)
         .attr("dx", 5)
         .attr("y", o.y);
-    })
+     })
   }
 
   render() {
