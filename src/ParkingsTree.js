@@ -12,7 +12,7 @@ export default class ParkingsTree extends Component {
   drawTree() {
     var margin = { top: 20, right: 50, bottom: 100, left: 90 },
       width = 700 + margin.right + margin.left,
-      height = 1960 + margin.bottom + margin.top;
+      height = 50 ;
     var i = 0, duration = 750
 
     var treemap = d3.tree().size([height, width]);
@@ -39,14 +39,22 @@ export default class ParkingsTree extends Component {
     // }
 
     function update(source) {
-      var treeData = treemap(root);
+      var nodes = treemap(root);
+      let nodesSort = [];
+    nodes.eachBefore(function (n) {
+      nodesSort.push(n);
+    });
       // Compute the new tree layout.
-      var nodes = treeData.descendants(),
-          links = treeData.descendants().slice(1);
+      height = Math.max(500, nodesSort.length * (height/2) + margin.top + margin.bottom);
+      var nodes = nodesSort,
+          links = nodesSort.slice(1);
       
-      
+      d3.select('svg').transition()
+          .duration(duration)
+          .attr("height", height);
       // Normalize for fixed-depth.
-      nodes.forEach(function (d) { d.y = d.depth * 150 });
+
+      nodes.forEach((d,j) => { d.x = j * 25; d.y = d.depth * 150 });
 
       // ****************** Nodes section ***************************
 
@@ -89,6 +97,7 @@ export default class ParkingsTree extends Component {
         .duration(duration)
         .attr("transform", function (d) {
           d.y = d.y + 120
+          d.x = d.x + 100
           return "translate(" + d.y + "," + d.x + ")";
         });
 
@@ -121,13 +130,13 @@ export default class ParkingsTree extends Component {
 
       // Update the links...
       var link = svg.selectAll('path.link')
-        .data(links, function (d) { return d.id; });
+        .data(links, function (d) { return d.id + '->' + d.parent.id });
 
       // Enter any new links at the parent's previous position.
       var linkEnter = link.enter().insert('path', "g")
         .attr("class", "link")
         .attr('d', function (d) {
-          var o = { x: source.x0, y: source.y0 }
+          var o = { x: source.x0, y: source.y0, parent: {x: source.x0, y: source.y0}}
           return diagonal(o, o)
         });
 
@@ -143,7 +152,7 @@ export default class ParkingsTree extends Component {
       var linkExit = link.exit().transition()
         .duration(duration)
         .attr('d', function (d) {
-          var o = { x: source.x, y: source.y }
+          var o = { x: source.x, y: source.y,parent: {x: source.x, y: source.y} }
           return diagonal(o, o)
         })
         .remove();
@@ -155,14 +164,11 @@ export default class ParkingsTree extends Component {
       });
 
       // Creates a curved (diagonal) path from parent to the child nodes
-      function diagonal(s, d) {
+      function diagonal(d) {
 
-        var path = `M ${s.y} ${s.x}
-                    C ${(s.y + d.y) / 2} ${s.x},
-                      ${(s.y + d.y) / 2} ${d.x},
-                      ${d.y} ${d.x}`
+       return "M" + d.parent.y + "," + d.parent.x
+        + "V" + d.x + "H" + d.y
 
-        return path
       }
       // Toggle children on click.
       function click(d) {
