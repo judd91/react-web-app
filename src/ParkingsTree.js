@@ -27,16 +27,16 @@ export default class ParkingsTree extends Component {
     var g = svg.append("g")
       .attr("transform", "translate(" + margin.left  + "," + margin.right + ")");
 
-    update(root)
     // Collapse after the second level
-    // root.children.forEach(collapse);
-    // function collapse(d) {
-    //   if (d.children) {
-    //     d._children = d.children
-    //     d._children.forEach(collapse)
-    //     d.children = null
-    //   }
-    // }
+    root.children.forEach(collapse);
+    function collapse(d) {
+       if (d.children) {
+         d._children = d.children
+         d._children.forEach(collapse)
+         d.children = null
+       }
+     }
+    update(root)
 
     function update(source) {
       var nodes = treemap(root);
@@ -45,7 +45,10 @@ export default class ParkingsTree extends Component {
       nodesSort.push(n);
     });
       // Compute the new tree layout.
-      height = Math.max(500, nodesSort.length * (height/2) + margin.top + margin.bottom);
+      console.log(nodesSort.length)
+      height = nodesSort.length * 25 + margin.top + margin.bottom;
+      console.log(height)
+
       var nodes = nodesSort,
           links = nodesSort.slice(1);
       
