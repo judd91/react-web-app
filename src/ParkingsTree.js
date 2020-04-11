@@ -10,9 +10,10 @@ export default class ParkingsTree extends Component {
   }
 
   drawTree() {
-    var margin = { top: 20, right: 50, bottom: 100, left: 90 },
+    var margin = { top: 20, right: 50, bottom: 100, left: 90 }, rectW = 170,
+    rectH = 20,
       width = 700 + margin.right + margin.left,
-      height = 50 ;
+      height = 50;
     var i = 0, duration = 750
 
     var treemap = d3.tree().size([height, width]);
@@ -22,46 +23,42 @@ export default class ParkingsTree extends Component {
 
     var svg = d3.select(this.refs.myDiv)
       .append("svg")
-      .attr("width", width + margin.left + margin.right )
+      .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
     var g = svg.append("g")
-      .attr("transform", "translate(" + margin.left  + "," + margin.right + ")");
+      .attr("transform", "translate(" + margin.left + "," + margin.right + ")");
 
-    // Collapse after the second level
+    // Collapse after the second level from the begining
     root.children.forEach(collapse);
     function collapse(d) {
-       if (d.children) {
-         d._children = d.children
-         d._children.forEach(collapse)
-         d.children = null
-       }
-     }
+      if (d.children) {
+        d._children = d.children
+        d._children.forEach(collapse)
+        d.children = null
+      }
+    }
     update(root)
 
     function update(source) {
       var nodes = treemap(root);
       let nodesSort = [];
-    nodes.eachBefore(function (n) {
-      nodesSort.push(n);
-    });
-      // Compute the new tree layout.
-      console.log(nodesSort.length)
+      nodes.eachBefore(function (n) {
+        nodesSort.push(n);
+      });
+
+      //svg size when click
       height = nodesSort.length * 25 + margin.top + margin.bottom;
-      console.log(height)
 
       var nodes = nodesSort,
-          links = nodesSort.slice(1);
-      
+        links = nodesSort.slice(1);
+
       d3.select('svg').transition()
-          .duration(duration)
-          .attr("height", height);
-      // Normalize for fixed-depth.
+        .duration(duration)
+        .attr("height", height);
 
-      nodes.forEach((d,j) => { d.x = j * 25; d.y = d.depth * 150 });
+      nodes.forEach((d, j) => { d.x = j * 25; d.y = d.depth * 150 });
 
-      // ****************** Nodes section ***************************
-
-      // Update the nodes...
+      // Update the nodes
       var node = svg.selectAll('g.node')
         .data(nodes, function (d) { return d.id || (d.id = ++i); });
 
@@ -74,22 +71,29 @@ export default class ParkingsTree extends Component {
         .on('click', click);
 
       // Add Circle for the nodes
-      nodeEnter.append('circle')
-        .attr('class', 'node')
-        .attr('r', 1e-6)
-        .style("fill", function (d) {
-          return d._children ? "lightsteelblue" : "#fff";
-        });
+      nodeEnter.append('rect')
+      .attr('ry', 6)
+      .attr('y', -10 )
+      .attr('width', rectW )
+		  .attr('height', rectH )
+      .attr('class', 'node-rect')
+      // .attr('r', 1e-6)
+      .style("fill", function (d) {
+        return d._children ? "lightsteelblue" : "#fff";
+      });
 
       // Add labels for the nodes
       nodeEnter.append('text')
-        .attr("dy", ".35em")
-        .attr("x", function (d) {
-          return d.children || d._children ? -13 : 13;
-        })
-        .attr("text-anchor", function (d) {
-          return d.children || d._children ? "end" : "start";
-        })
+      .attr("x", rectW /2 )
+        // .attr("y", rectH / 2)
+        .attr("dy", ".45em")
+        .attr("text-anchor", "middle")
+        // .attr("x", function (d) {
+        //   return d.children || d._children ? -13 : 13;
+        // })
+        // .attr("text-anchor", function (d) {
+        //   return d.children || d._children ? "end" : "start";
+        // })
         .text(function (d) { if (d.data.name) return d.data.name; else return d.data.NOMBRE });
 
       // UPDATE
@@ -139,7 +143,7 @@ export default class ParkingsTree extends Component {
       var linkEnter = link.enter().insert('path', "g")
         .attr("class", "link")
         .attr('d', function (d) {
-          var o = { x: source.x0, y: source.y0, parent: {x: source.x0, y: source.y0}}
+          var o = { x: source.x0, y: source.y0, parent: { x: source.x0, y: source.y0 } }
           return diagonal(o, o)
         });
 
@@ -155,7 +159,7 @@ export default class ParkingsTree extends Component {
       var linkExit = link.exit().transition()
         .duration(duration)
         .attr('d', function (d) {
-          var o = { x: source.x, y: source.y,parent: {x: source.x, y: source.y} }
+          var o = { x: source.x, y: source.y, parent: { x: source.x, y: source.y } }
           return diagonal(o, o)
         })
         .remove();
@@ -168,10 +172,8 @@ export default class ParkingsTree extends Component {
 
       // Creates a curved (diagonal) path from parent to the child nodes
       function diagonal(d) {
-
-       return "M" + d.parent.y + "," + d.parent.x
-        + "V" + d.x + "H" + d.y
-
+        return "M" + d.parent.y + "," + d.parent.x
+          + "V" + d.x + "H" + d.y
       }
       // Toggle children on click.
       function click(d) {

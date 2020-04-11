@@ -11,6 +11,7 @@ import {
 } from "react-router-dom";
 import ParkingView from './ParkingView.js';
 import ParkingsTree from './ParkingsTree.js';
+import ShowAll from './ShowAll.js';
 
 const aparcamientos = data.item
 
@@ -32,6 +33,7 @@ function ModalSwitch() {
       <Switch location={background || location}>
         <Route exact path="/" children={<Home />} />
         <Route path="/districts" children={<ParkingsTree />} />
+        <Route path="/all" children={<ShowAll />} />
         <Route path="/parking/:id" children={<ParkingView />} />
       </Switch>
 
@@ -44,21 +46,28 @@ function ModalSwitch() {
 function Home() {
   return (
     <div className="mainaparcamientos">
+      <IntroJumbo />
       <Link to="/districts"> <Button >By Districts</Button> </Link>
-
-      <Row >
-        {aparcamientos.map(element => (
-          <Col xs="5" sm="4" md="3" key={element.PK}>
-            <Card className="cardsType" body>
-              <CardTitle>{element.NOMBRE}</CardTitle>
-              <CardText>{element.DIRECCION}</CardText>
-              <CardText>{element.BARRIO}, {element.DISTRITO}</CardText>
-              <Link to={`/parking/${element.PK}`}> <Button >See on map</Button> </Link>
-            </Card>
-          </Col>
-        ))}
-      </Row>
+      <Link to="/all"> <Button >Show all</Button> </Link>
+      
     </div>
+  )
+}
+
+function IntroJumbo(){
+  return(
+    <div class="jumbotron ">
+        <h1 class="display-4">Find your perfect parking in Madrid!</h1>
+        <p class="lead">You can search the best parking option close to you in each area of Madrid</p>
+        <hr class="my-4"></hr>
+        <div class="searching" >
+        <form class="form-inline justify-content-center">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search location" aria-label="Search"></input>
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+        </div>
+
+      </div>
   )
 }
 
