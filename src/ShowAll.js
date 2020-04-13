@@ -21,7 +21,6 @@ export default function ShowAll() {
 
 function AllParkings(){
   const aparcamientos = data.item;
-
   return (
       <Row >
         {aparcamientos.map(element => (
