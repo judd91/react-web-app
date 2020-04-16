@@ -3,3 +3,19 @@
     position: absolute;
     width: 100%;
   }
+
+  .cardtopark {
+    cursor: pointer;
+  }
+
+  .cardtopark:hover{
+    background-color: #ccc;
+  }
+
+  .area{
+    width: 100%;
+  }
+
+  .card-body{
+    padding: 0 !important;
+  }
