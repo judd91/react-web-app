@@ -34,8 +34,7 @@ export default class ParkingsCollapse extends Component {
             <Accordion>
               {this.elements.map(({ name, children }, i) => {
                 const todoItems = children.map((item, j) => {
-                  this.parkings = item.children.map( (parking,k) => {return parking.NOMBRE } )
-                  
+                  this.parkings = item.children.map( (parking,k) => {return parking.NOMBRE } )                  
                   return (
                   <div className="btn btn-light area" key={j} onClick={this.showParkings(this.parkings, item.name)}> {item.name} </div>
                   )
@@ -50,8 +49,7 @@ export default class ParkingsCollapse extends Component {
                       {/* {children.map((aaa,j) => <p key={j}> {aaa.name} </p>
                   )} */}
                       <Card.Body key={i}>{todoItems}</Card.Body>
-                      {/* {this.kids.map((item, j) =>
-                  
+                      {/* {this.kids.map((item, j) =>                  
                 )}  */}
                     </Accordion.Collapse>
                   </Card>

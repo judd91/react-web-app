@@ -1,0 +1,18 @@
+.parkings-card{
+    height: 12rem;
+}
+
+.showall{
+    top: 64px;
+    position: absolute;
+    width: 100%;
+}
+
+.card-content{
+    padding-top: 2% !important;
+    padding-bottom: 2% !important;
+}
+
+.parkings-table{
+    max-height: 100vw;
+}
