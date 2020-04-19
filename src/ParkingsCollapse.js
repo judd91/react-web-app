@@ -19,10 +19,10 @@ export default class ParkingsCollapse extends Component {
   }
 
   showParkings = (parkings, reg) => () => {
-    const park = parkings.map((element, k) => { return <p key={k}>{element}</p> })
+    const park = parkings.map((element, k) => { const x = element.split("."); return <p key={k}>{x[1]}</p> })
     this.setState({ 
       region: <h3> Parkings in {reg}: </h3>,
-      input: park 
+      input: park
     })
   };
   
