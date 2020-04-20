@@ -13,7 +13,7 @@ import "./css/ShowAll.css";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { FaRegEnvelope } from "react-icons/fa";
 import {FaPhone} from "react-icons/fa";
-
+import {FaGlobe} from "react-icons/fa";
 
 export default class ShowAll extends Component{
   constructor (props){
@@ -56,8 +56,10 @@ export default class ShowAll extends Component{
             <th>Name</th>
             <th>Area</th>
             <th>District</th>
-            <th>Adress</th>
-            <th>P.C.</th>
+            {/* <th>Adress</th> */}
+            {/* <th>P.C.</th> */}
+            <th>Type</th>
+            <th>Description</th>
             <th>Info</th>
           </tr>
         </thead>
@@ -71,20 +73,23 @@ export default class ShowAll extends Component{
                 {/* <td>{element.NOMBRE[0]}</td> */}
                 <td>{element.BARRIO}</td>
                 <td>{element.DISTRITO}</td>
-                <td>{element.DIRECCION}</td>
-                <td>{element["CODIGO-POSTAL"]}</td>
+                <td>{name_p[0]}</td>
+                <td>{element.DESCRIPCION}</td>
+                {/* <td>{element.DIRECCION}</td> */}
+                {/* <td>{element["CODIGO-POSTAL"]}</td> */}
                 <td>
                   {/* <Button color="primary" id={"toggler" + element.PK} style={{ marginBottom: '1rem' }}> + </Button> */}
                   <ButtonGroup size="sm">
                     <Button onClick={(e)=>this.handleShow(e, element, element.TELEFONO)} ><FaPhone/></Button>
                     <Button onClick={(e)=>this.handleShow(e, element, element.EMAIL)}><FaRegEnvelope/></Button>
                     <Button onClick={(e)=>this.handleShow(e, element, element.DIRECCION + ", " + element["CODIGO-POSTAL"] + ", Madrid")}><FaMapMarkerAlt/></Button>
+                    <Button href={element["CONTENT-URL"]}><FaGlobe/></Button>
                   </ButtonGroup>
                   <Modal isOpen={this.show} >
                     <ModalHeader>{this.state.modaltitle}</ModalHeader>
                     <ModalBody>{this.state.modalinfo}</ModalBody>
                     <ModalFooter>
-                      <Button color="secondary" onClick={(e)=>this.handleShow(e, "" , "" )}>Cancel</Button>
+                      <Button color="secondary" onClick={(e)=>this.handleShow(e, "" , "" )}>Return</Button>
                     </ModalFooter>
                   </Modal>
                   {/* <infomodal/> */}
