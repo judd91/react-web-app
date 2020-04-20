@@ -15,42 +15,45 @@ import { FaRegEnvelope } from "react-icons/fa";
 import {FaPhone} from "react-icons/fa";
 
 
-export default function ShowAll() {
+export default class ShowAll extends Component{
+  constructor (props){
+    super(props)
+    this.aparcamientos = data.item;
+
+    this.state = {
+      modalinfo: "",
+      modaltitle: ""
+    }
+    this.handleShow = this.handleShow.bind(this);
+
+    this.show = false
+  }
+  handleShow(e, id, info) {
+    if(info == null){
+      this.setState({ 
+        modalinfo: "There is no information",
+        modaltitle: id.NOMBRE
+      })
+    } else {
+      console.log(id)
+      this.setState({ 
+        modalinfo: info,
+        modaltitle: id.NOMBRE
+      })
+    }
+     
+    this.show = !this.show;
+    console.log(this.show)
+  }
+
+  render(){
     return (
       <div className="showall">
-        <AllParkings />
-      </div>
-    )
-}
-// function infomodal(datainfo){
-//   return(
-//     <Modal isOpen={modal} fade={false}>
-//       <ModalBody>datainfo</ModalBody>
-//     </Modal>
-//   )
-// }
-
-function AllParkings() {
-  const aparcamientos = data.item;
-
-  const [modal, setModal] = useState(false);
-
-  const toggle = () => setModal(!modal);
-
-  const infomodal = (datainfo) => {
-    return(
-      <Modal isOpen={modal} fade={false}>
-        <ModalBody>{datainfo}</ModalBody>
-      </Modal>
-    )
-  }
-  return (
-    <Row >
+        <Row >
       <Table className="parkings-table">
         <thead>
           <tr>
             <th>Name</th>
-            {/* <th>Type</th> */}
             <th>Area</th>
             <th>District</th>
             <th>Adress</th>
@@ -59,12 +62,10 @@ function AllParkings() {
           </tr>
         </thead>
         <tbody>
-        {aparcamientos.map(element => {
+        {this.aparcamientos.map(element => {
           const name_p = element.NOMBRE.split(".")
-          
           return (
             // <Col xs="5" sm="4" md="3" key={element.PK}>
-
               <tr key={element.PK}>
                 <td>{name_p[1]}</td>
                 {/* <td>{element.NOMBRE[0]}</td> */}
@@ -75,43 +76,19 @@ function AllParkings() {
                 <td>
                   {/* <Button color="primary" id={"toggler" + element.PK} style={{ marginBottom: '1rem' }}> + </Button> */}
                   <ButtonGroup size="sm">
-                    <Button onClick={infomodal(element.TELEFONO)}><FaPhone/></Button>
-                    <Button onClick={toggle}><FaRegEnvelope/></Button>
-                    <Button onClick={toggle}><FaMapMarkerAlt/></Button>
+                    <Button onClick={(e)=>this.handleShow(e, element, element.TELEFONO)} ><FaPhone/></Button>
+                    <Button onClick={(e)=>this.handleShow(e, element, element.EMAIL)}><FaRegEnvelope/></Button>
+                    <Button onClick={(e)=>this.handleShow(e, element, element.DIRECCION + ", " + element["CODIGO-POSTAL"] + ", Madrid")}><FaMapMarkerAlt/></Button>
                   </ButtonGroup>
-                  <infomodal/>
-
-                  {/* <Button color="primary" onClick={toggle}>+</Button> */}
-                  {/* <Modal isOpen={modal} fade={false} toggle={toggle}>
-                    <ModalHeader toggle={toggle}>{name_p[1]}</ModalHeader>
-                    <ModalBody>
-                      <div className="modalitem">
-                        <p>Time: {element.HORARIO}</p>
-                        <p>Telephone: {element.TELEFONO}</p>
-                        <p>Type: {element.DESCRIPCION}</p>
-                        <p>Email: {element.EMAIL}</p>
-                        <p>Url: {element["CONTENT-URL"]}</p>
-                      </div>
-                    </ModalBody>
+                  <Modal isOpen={this.show} >
+                    <ModalHeader>{this.state.modaltitle}</ModalHeader>
+                    <ModalBody>{this.state.modalinfo}</ModalBody>
                     <ModalFooter>
-                      <Button color="primary" onClick={toggle}>Do Something</Button>{' '}
-                      <Button color="secondary" onClick={toggle}>Cancel</Button>
+                      <Button color="secondary" onClick={(e)=>this.handleShow(e, "" , "" )}>Cancel</Button>
                     </ModalFooter>
-                  </Modal> */}
-                  {/* <UncontrolledCollapse toggler={"#toggler" + element.PK}>
-                    <Card>
-                      <CardBody>
-                        <p>{element.NOMBRE[0]}</p>
-                        <p>{element.HORARIO}</p>
-                        <p>{element.TELEFONO}</p>
-                        <p>{element.TIPO}</p>
-                        <p>{element.EMAIL}</p>
-                        <p>{element["CONTENT-URL"]}</p>
+                  </Modal>
+                  {/* <infomodal/> */}
 
-                      </CardBody>
-                    </Card>
-                  </UncontrolledCollapse>  */}
-                
                 </td>
                            
               </tr>
@@ -119,7 +96,28 @@ function AllParkings() {
           </tbody>
         </Table>
       </Row>
+      </div>
     )
+  }
+}
+
+
+function AllParkings() {
+
+
+  // const infomodal = (datainfo) => {
+  //   return(
+  //     <Modal show={show} onHide={handleClose}>
+  //       <ModalBody>{datainfo}</ModalBody>
+  //     </Modal>
+  //   )
+  // }
+
+  // const toggle = () => setModal(!modal);
+  
+  // return (
+    
+  //   )
 }
 
 
