@@ -22,8 +22,15 @@ export default class ShowAll extends Component{
 
     this.state = {
       isOpen: false,
+      index: null,
+      el:null
     }
 
+  }
+
+  dothings = (n, element) =>{
+    this.index = n;
+    this.el = element
   }
 
   render(){
@@ -54,12 +61,21 @@ export default class ShowAll extends Component{
                 {/* <td>{element.DESCRIPCION}</td> */}
                 <td>
                 <ButtonGroup size="sm">
-                  <ButtonDropGroup element={element.TELEFONO} pk={element.PK + "1"} icon="iconPhone"/>
+                <Button color="primary" id={"toggler_" + element.PK + "1"} onClick= {this.dothings(element.PK + "1", element.TELEFONO)}> <FaPhone/> </Button>
+                <Button color="primary" id={"toggler_" + element.PK + "2"} onClick= {this.dothings(element.PK + "2", element.EMAIL)}> <FaRegEnvelope/> </Button>
+                <Button color="primary" id={"toggler_" + element.PK + "3"} onClick= {this.dothings(element.PK + "3", element.DIRECCION)}> <FaMapMarkerAlt/> </Button>
+                  {/* <ButtonDropGroup element={element.TELEFONO} pk={element.PK + "1"} icon="iconPhone"/>
                   <ButtonDropGroup element={element.EMAIL} pk={element.PK + "2"} icon="iconMail"/>
-                  <ButtonDropGroup element={element.DIRECCION} pk={element.PK} icon="iconAdd"/>
+                  <ButtonDropGroup element={element.DIRECCION} pk={element.PK} icon="iconAdd"/> */}
                   <Button href={element["CONTENT-URL"]}><FaGlobe/></Button>
-
                 </ButtonGroup>
+                <UncontrolledCollapse toggler={"#toggler_" + this.index}>
+                  <Card>
+                    <CardBody>
+                    {this.el}
+                    </CardBody>
+                  </Card>
+                </UncontrolledCollapse>
                 </td>                           
               </tr>
                 )})}
@@ -100,16 +116,16 @@ class ButtonDropGroup extends Component{
     }
     return (    
       <div>      
-        <Button color="primary" id={"toggler_" + this.props.pk}>
+        {/* <Button color="primary" id={"toggler_" + this.props.pk}>
         {but}
-        </Button>
-        <UncontrolledCollapse toggler={"#toggler_" + this.props.pk}>
-          <Card>
-            <CardBody>
-            {this.props.element}
-            </CardBody>
-          </Card>
-        </UncontrolledCollapse>
+        </Button> */}
+        <UncontrolledCollapse toggler={"#toggler_" + this.props.collid}>
+                  <Card>
+                    <CardBody>
+                    {this.props.element}
+                    </CardBody>
+                  </Card>
+                </UncontrolledCollapse>
       </div>   
       // <Dropdown isOpen={this.state.isOpen} toggle={this.toggle}>
       //   <DropdownToggle >{but}</DropdownToggle> 
