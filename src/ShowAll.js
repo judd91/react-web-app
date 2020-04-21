@@ -1,7 +1,7 @@
 import React, { Component, useState  } from 'react';
 import ReactDOM from 'react-dom';
 import data from './data/file.js';
-import { Dropdown , DropdownToggle, DropdownMenu, DropdownItem, Card, Button, CardTitle, CardText, Row, Col, Table , ButtonGroup , CardBody, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
+import { UncontrolledCollapse, Dropdown , DropdownToggle, DropdownMenu, DropdownItem, Card, Button, CardTitle, CardText, Row, Col, Table , ButtonGroup , CardBody, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 import {
   BrowserRouter as Router,
   Switch,
@@ -54,10 +54,11 @@ export default class ShowAll extends Component{
                 {/* <td>{element.DESCRIPCION}</td> */}
                 <td>
                 <ButtonGroup size="sm">
-                  <ButtonDropGroup element={element.TELEFONO} icon="iconPhone"/>
-                  <ButtonDropGroup element={element.EMAIL} icon="iconMail"/>
-                  <ButtonDropGroup element={element.DIRECCION} icon="iconAdd"/>
+                  <ButtonDropGroup element={element.TELEFONO} pk={element.PK + "1"} icon="iconPhone"/>
+                  <ButtonDropGroup element={element.EMAIL} pk={element.PK + "2"} icon="iconMail"/>
+                  <ButtonDropGroup element={element.DIRECCION} pk={element.PK} icon="iconAdd"/>
                   <Button href={element["CONTENT-URL"]}><FaGlobe/></Button>
+
                 </ButtonGroup>
                 </td>                           
               </tr>
@@ -97,11 +98,23 @@ class ButtonDropGroup extends Component{
     } else if( this.props.icon == "iconAdd" ){
       but = <FaMapMarkerAlt/>
     }
-    return (       
-      <Dropdown isOpen={this.state.isOpen} toggle={this.toggle}>
-        <DropdownToggle >{but}</DropdownToggle> 
-        <DropdownMenu><DropdownItem>{this.props.element}</DropdownItem></DropdownMenu>
-      </Dropdown >
+    return (    
+      <div>      
+        <Button color="primary" id={"toggler_" + this.props.pk}>
+        {but}
+        </Button>
+        <UncontrolledCollapse toggler={"#toggler_" + this.props.pk}>
+          <Card>
+            <CardBody>
+            {this.props.element}
+            </CardBody>
+          </Card>
+        </UncontrolledCollapse>
+      </div>   
+      // <Dropdown isOpen={this.state.isOpen} toggle={this.toggle}>
+      //   <DropdownToggle >{but}</DropdownToggle> 
+      //   <DropdownMenu><DropdownItem>{this.props.element}</DropdownItem></DropdownMenu>
+      // </Dropdown >
     )
   }
 
