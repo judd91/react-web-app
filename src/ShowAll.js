@@ -1,7 +1,7 @@
 import React, { Component, useState  } from 'react';
 import ReactDOM from 'react-dom';
 import data from './data/file.js';
-import { UncontrolledCollapse, Dropdown , DropdownToggle, DropdownMenu, DropdownItem, Card, Button, CardTitle, CardText, Row, Col, Table , ButtonGroup , CardBody, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
+import { UncontrolledCollapse, Dropdown , DropdownToggle, DropdownMenu, DropdownItem, Card, Button, CardTitle, CardText, Row, Col, Table , ButtonGroup , CardBody, Modal, ModalHeader, ModalBody, ModalFooter, Collapse} from 'reactstrap';
 import {
   BrowserRouter as Router,
   Switch,
@@ -21,17 +21,30 @@ export default class ShowAll extends Component{
     this.aparcamientos = data.item;
 
     this.state = {
-      isOpen: false,
       index: null,
-      el:null
+      activeIndex: null,
+      item: null,
+      activeButton: null
     }
 
   }
 
-  dothings = (n, element) =>{
-    this.index = n;
-    this.el = element
-  }
+  showCard = (reg, j, i, element) => () => {
+    // if(reg != this.state.index){
+      // this.state.isOpen = true;
+    // }
+    // if(this.state.activeButton == j || this.state.activeButton == 0){
+      this.setState({ 
+        index: reg,
+        activeIndex: (this.state.activeIndex === i && this.state.activeButton === j) ? null : i,
+        activeButton: j,
+        item: element
+        // code: <Collapse isOpened={activeIndex === index}> {reg} </Collapse >
+      })
+    
+    console.log(this.state.activeIndex, " ", j, " ", i)
+    
+  };
 
   render(){
     return (
@@ -49,9 +62,9 @@ export default class ShowAll extends Component{
           </tr>
         </thead>
         <tbody>
-        {this.aparcamientos.map(element => {
+        {this.aparcamientos.map((element, i) => {
           const name_p = element.NOMBRE.split(".")
-
+          
           return (
               <tr key={element.PK}>
                 <td>{name_p[1]}</td>
@@ -61,21 +74,20 @@ export default class ShowAll extends Component{
                 {/* <td>{element.DESCRIPCION}</td> */}
                 <td>
                 <ButtonGroup size="sm">
-                <Button color="primary" id={"toggler_" + element.PK + "1"} onClick= {this.dothings(element.PK + "1", element.TELEFONO)}> <FaPhone/> </Button>
-                <Button color="primary" id={"toggler_" + element.PK + "2"} onClick= {this.dothings(element.PK + "2", element.EMAIL)}> <FaRegEnvelope/> </Button>
-                <Button color="primary" id={"toggler_" + element.PK + "3"} onClick= {this.dothings(element.PK + "3", element.DIRECCION)}> <FaMapMarkerAlt/> </Button>
+                <Button color="primary" id={"toggle_" + element.PK + "1"} onClick= {this.showCard(element.PK, 1, i, element.TELEFONO) }> <FaPhone/> </Button>
+                <Button color="primary" id={"toggle_" + element.PK + "2"} onClick= {this.showCard(element.PK, 2, i, element.EMAIL)}> <FaRegEnvelope/> </Button>
+                <Button color="primary" id={"toggle_" + element.PK + "3"} onClick= {this.showCard(element.PK, 3, i, element.DIRECCION) }> <FaMapMarkerAlt/> </Button>
                   {/* <ButtonDropGroup element={element.TELEFONO} pk={element.PK + "1"} icon="iconPhone"/>
                   <ButtonDropGroup element={element.EMAIL} pk={element.PK + "2"} icon="iconMail"/>
                   <ButtonDropGroup element={element.DIRECCION} pk={element.PK} icon="iconAdd"/> */}
                   <Button href={element["CONTENT-URL"]}><FaGlobe/></Button>
                 </ButtonGroup>
-                <UncontrolledCollapse toggler={"#toggler_" + this.index}>
-                  <Card>
-                    <CardBody>
-                    {this.el}
-                    </CardBody>
-                  </Card>
-                </UncontrolledCollapse>
+                {/* {console.log(this.state.index)}
+                {console.log(this.state.isOpen)} */}
+                {/* {this.state.code} */}
+                <Collapse isOpen={this.state.activeIndex === i}> {this.state.item} </Collapse >
+                {/* {this.state.isOpen ?  : null} */}
+                {/* <ButtonDropGroup element={element.TELEFONO} collid={this.index}/> */}
                 </td>                           
               </tr>
                 )})}
