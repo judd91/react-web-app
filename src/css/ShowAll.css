@@ -21,6 +21,15 @@
     padding: 2%;
 }
 
-/* .cardforinfo{
-    width: 100px;
-} */
+.cardforinfo{
+    /* max-width: 170px; */
+    word-wrap: break-word
+}
+
+.details-table{
+    width: 300px;
+    min-width: 150px;
+    overflow: hidden;
+    /* display: inline-block; */
+    /* white-space: nowrap; */
+}

@@ -1,18 +1,14 @@
-import React, { Component, useState  } from 'react';
-import ReactDOM from 'react-dom';
+import React, { Component } from 'react';
 import data from './data/file.js';
-import { UncontrolledCollapse, Dropdown , DropdownToggle, DropdownMenu, DropdownItem, Card, Button, CardTitle, CardText, Row, Col, Table , ButtonGroup , CardBody, Modal, ModalHeader, ModalBody, ModalFooter, Collapse} from 'reactstrap';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useLocation,
-} from "react-router-dom";
+import { Alert, Button, Row, Col, Table , ButtonGroup , Collapse} from 'reactstrap';
 import "./css/ShowAll.css";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { FaRegEnvelope } from "react-icons/fa";
 import {FaPhone} from "react-icons/fa";
+import {FaParking} from "react-icons/fa";
+import {FaInfoCircle} from "react-icons/fa";
+
+
 import {FaGlobe} from "react-icons/fa";
 
 export default class ShowAll extends Component{
@@ -30,16 +26,11 @@ export default class ShowAll extends Component{
   }
 
   showCard = (reg, j, i, element) => () => {
-    // if(reg != this.state.index){
-      // this.state.isOpen = true;
-    // }
-    // if(this.state.activeButton == j || this.state.activeButton == 0){
       this.setState({ 
         index: reg,
         activeIndex: (this.state.activeIndex === i && this.state.activeButton === j) ? null : i,
         activeButton: j,
-        item: element
-        // code: <Collapse isOpened={activeIndex === index}> {reg} </Collapse >
+        item: element ? element : "No information available."
       })
     
     console.log(this.state.activeIndex, " ", j, " ", i)
@@ -57,8 +48,8 @@ export default class ShowAll extends Component{
             <th>Area</th>
             <th>District</th>
             <th>Type</th>
-            <th>Description</th>
-            <th>Info</th>
+            <th>Details</th>
+            <th>Information</th>
           </tr>
         </thead>
         <tbody>
@@ -71,24 +62,19 @@ export default class ShowAll extends Component{
                 <td>{element.BARRIO}</td>
                 <td>{element.DISTRITO}</td>
                 <td>{name_p[0]}</td>
-                {/* <td>{element.DESCRIPCION}</td> */}
                 <td>
-                <ButtonGroup size="sm">
-                <Button color="primary" id={"toggle_" + element.PK + "1"} onClick= {this.showCard(element.PK, 1, i, element.TELEFONO) }> <FaPhone/> </Button>
-                <Button color="primary" id={"toggle_" + element.PK + "2"} onClick= {this.showCard(element.PK, 2, i, element.EMAIL)}> <FaRegEnvelope/> </Button>
-                <Button color="primary" id={"toggle_" + element.PK + "3"} onClick= {this.showCard(element.PK, 3, i, element.DIRECCION) }> <FaMapMarkerAlt/> </Button>
-                  {/* <ButtonDropGroup element={element.TELEFONO} pk={element.PK + "1"} icon="iconPhone"/>
-                  <ButtonDropGroup element={element.EMAIL} pk={element.PK + "2"} icon="iconMail"/>
-                  <ButtonDropGroup element={element.DIRECCION} pk={element.PK} icon="iconAdd"/> */}
-                  <Button href={element["CONTENT-URL"]}><FaGlobe/></Button>
-                </ButtonGroup>
-                {/* {console.log(this.state.index)}
-                {console.log(this.state.isOpen)} */}
-                {/* {this.state.code} */}
-                <Collapse isOpen={this.state.activeIndex === i}> {this.state.item} </Collapse >
-                {/* {this.state.isOpen ?  : null} */}
-                {/* <ButtonDropGroup element={element.TELEFONO} collid={this.index}/> */}
-                </td>                           
+                  <ButtonGroup size="md">
+                    <Button data-toggle="tooltip" data-placement="top" title="Telephone" color="primary" id={"toggle_" + element.PK + "1"} onClick= {this.showCard(element.PK, 1, i, element.TELEFONO) }> <FaPhone/> </Button>
+                    <Button data-toggle="tooltip" data-placement="top" title="Email" color="primary" id={"toggle_" + element.PK + "2"} onClick= {this.showCard(element.PK, 2, i, element.EMAIL)}> <FaRegEnvelope/> </Button>
+                    <Button data-toggle="tooltip" data-placement="top" title="Address" color="primary" id={"toggle_" + element.PK + "3"} onClick= {this.showCard(element.PK, 3, i, element.DIRECCION) }> <FaMapMarkerAlt/> </Button>
+                    <Button data-toggle="tooltip" data-placement="top" title="Details" color="primary" id={"toggle_" + element.PK + "4"} onClick= {this.showCard(element.PK, 4, i, element.DESCRIPCION) }> <FaInfoCircle/> </Button>
+
+                    {/* <Button data-toggle="tooltip" data-placement="top" title="Go to the website" href={window.open(element["CONTENT-URL"])} ><FaGlobe/></Button> */}
+                  </ButtonGroup>
+                  {/* <Collapse className="cardforinfo" isOpen={this.state.activeIndex === i}> <Alert color="primary">{this.state.item}</Alert> </Collapse > */}
+                </td>   
+                <td className="details-table"><Collapse className="cardforinfo" isOpen={this.state.activeIndex === i}> <Alert color="primary">{this.state.item}</Alert> </Collapse ></td>
+                        
               </tr>
                 )})}
           </tbody>
@@ -100,51 +86,51 @@ export default class ShowAll extends Component{
 }
 
 
-class ButtonDropGroup extends Component{
-  constructor (props){
-    super(props)  
-    this.state = {
-      isOpen: false
-    }
-    // this.toggle = this.toggle.bind(this);
-  }
+// class ButtonDropGroup extends Component{
+//   constructor (props){
+//     super(props)  
+//     this.state = {
+//       isOpen: false
+//     }
+//     // this.toggle = this.toggle.bind(this);
+//   }
   
-  toggle = () => {
-    this.setState({
-      isOpen: !this.state.isOpen
-    });
-  }
+//   toggle = () => {
+//     this.setState({
+//       isOpen: !this.state.isOpen
+//     });
+//   }
   
   
-  render() {
-    console.log("WEP")
-    let but;
-    if(this.props.icon == "iconPhone" ){
-      but = <FaPhone/>
-    } else if ( this.props.icon == "iconMail" ){
-      but = <FaRegEnvelope/>
-    } else if( this.props.icon == "iconAdd" ){
-      but = <FaMapMarkerAlt/>
-    }
-    return (    
-      <div>      
-        {/* <Button color="primary" id={"toggler_" + this.props.pk}>
-        {but}
-        </Button> */}
-        <UncontrolledCollapse toggler={"#toggler_" + this.props.collid}>
-                  <Card>
-                    <CardBody>
-                    {this.props.element}
-                    </CardBody>
-                  </Card>
-                </UncontrolledCollapse>
-      </div>   
-      // <Dropdown isOpen={this.state.isOpen} toggle={this.toggle}>
-      //   <DropdownToggle >{but}</DropdownToggle> 
-      //   <DropdownMenu><DropdownItem>{this.props.element}</DropdownItem></DropdownMenu>
-      // </Dropdown >
-    )
-  }
+//   render() {
+//     console.log("WEP")
+//     let but;
+//     if(this.props.icon == "iconPhone" ){
+//       but = <FaPhone/>
+//     } else if ( this.props.icon == "iconMail" ){
+//       but = <FaRegEnvelope/>
+//     } else if( this.props.icon == "iconAdd" ){
+//       but = <FaMapMarkerAlt/>
+//     }
+//     return (    
+//       <div>      
+//         {/* <Button color="primary" id={"toggler_" + this.props.pk}>
+//         {but}
+//         </Button> */}
+//         <UncontrolledCollapse toggler={"#toggler_" + this.props.collid}>
+//                   <Card>
+//                     <CardBody>
+//                     {this.props.element}
+//                     </CardBody>
+//                   </Card>
+//                 </UncontrolledCollapse>
+//       </div>   
+//       // <Dropdown isOpen={this.state.isOpen} toggle={this.toggle}>
+//       //   <DropdownToggle >{but}</DropdownToggle> 
+//       //   <DropdownMenu><DropdownItem>{this.props.element}</DropdownItem></DropdownMenu>
+//       // </Dropdown >
+//     )
+//   }
 
 
-}
+// }
