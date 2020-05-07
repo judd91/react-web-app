@@ -7,6 +7,10 @@ This Web Application shows information of parkings in Madrid. It is just a perso
 2. The application is implemented in **Javascript**, using [React.js](https://es.reactjs.org/).
 3. The style libraries used are [bootstrap](https://getbootstrap.com/), [reactstrap](https://reactstrap.github.io/) and [react-icons](https://react-icons.github.io/react-icons/icons?name=fa).
 
+#### React topics covered.
+Routing, events, state, hooks, rendering.
+
+
 ## Functionality.
 - Searching by district, area or name. 
 - Show parking information by district. 
