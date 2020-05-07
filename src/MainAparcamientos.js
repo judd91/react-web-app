@@ -1,6 +1,6 @@
 import React from 'react';
 import data from './data/file.js';
-import { Card, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
+import { Card, Button, CardTitle, CardText, Row, Col, Alert } from 'reactstrap';
 import "./css/MainAparcamientos.css"
 import {
   BrowserRouter as Router,
@@ -13,6 +13,8 @@ import ParkingView from './ParkingView.js';
 import ParkingsTree from './ParkingsTree.js';
 import ShowAll from './ShowAll.js';
 import ParkingsCollapse from './ParkingsCollapse.js'
+import {FaSistrix} from "react-icons/fa";
+
 
 const aparcamientos = data.item
 
@@ -49,28 +51,68 @@ function Home() {
   return (
     <div className="mainaparcamientos">
       <IntroJumbo />
-      <div className="btn-group">
-        <Link to="/districts" type="button" className="btn btn-secondary butcustom">By Districts</Link>
-        <Link to="/all" type="button" className="btn btn-secondary butcustom">Show all</Link>
-      </div>      
+   
+      {/* <SearchingBar /> */}
     </div>
   )
 }
 
+// function SearchingBar(){
+//   const [searchTerm, setSearchTerm, isOpen] = React.useState("");
+//  const [searchResults, setSearchResults] = React.useState([]);
+//  const handleChange = event => {
+//     setSearchTerm(event.target.value);
+//   };
+//   React.useEffect(() => {
+//     const results = aparcamientos.filter(parking =>
+//       // console.log(parking)
+//       parking.NOMBRE.toLowerCase().includes(searchTerm)
+//     );
+//     setSearchResults(results);
+//   }, [searchTerm]);
+
+//   const showSearching = event => {
+//     // isOpen = !isOpen
+//   };
+//   return(
+//     <div>
+
+
+// <form className="form-inline justify-content-center">
+//           <input className="form-control mr-sm-2" type="search" placeholder="Search" value={searchTerm}
+//         onChange={handleChange}aria-label="Search"></input>
+//           <button className="btn btn-outline-success my-2 my-sm-0" type="submit" onClick={showSearching} ><FaSistrix/></button>
+//         </form>
+//         <div>
+//       <Alert>
+//       {searchResults.map((item,i) => (
+//         <p key={i}>{item.NOMBRE}</p>
+//       ))}
+//     </Alert>
+//     </div>
+//     </div>
+
+//   )
+
+// }
+
 function IntroJumbo(){
+ 
   return(
+
     <div className="jumbotron ">
         <h1 className="display-4">Find your perfect parking in Madrid!</h1>
-        <p className="lead">You can search the best parking option close to you in each area of Madrid</p>
+        <p className="lead">You can search the best parking option for you in each area of Madrid.</p>
         <hr className="my-4"></hr>
-        <div className="searching" >
-        <form className="form-inline justify-content-center">
-          <input className="form-control mr-sm-2" type="search" placeholder="Search location" aria-label="Search"></input>
-          <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
-        </div>
+        <div className="btn-group">
+        <Link to="/all" type="button" className="btn btn-secondary butcustom">Search</Link>
+        <Link to="/districts" type="button" className="btn btn-secondary butcustom">Districts</Link>
+        <Link to="/parking/:id" type="button" className="btn btn-secondary butcustom">Map</Link>
 
+      </div>   
       </div>
+      
+
   )
 }
 

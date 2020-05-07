@@ -7,6 +7,8 @@ import { FaRegEnvelope } from "react-icons/fa";
 import {FaPhone} from "react-icons/fa";
 import {FaParking} from "react-icons/fa";
 import {FaInfoCircle} from "react-icons/fa";
+import {FaSistrix} from "react-icons/fa";
+
 
 
 import {FaGlobe} from "react-icons/fa";
@@ -20,10 +22,36 @@ export default class ShowAll extends Component{
       index: null,
       activeIndex: null,
       item: null,
-      activeButton: null
+      activeButton: null,
+      // searchTerm:"",
+      searchResults: this.aparcamientos
+
     }
 
   }
+
+   handleChange = event => {
+    //  console.log(event.target.value)
+    if(event.target.value.length > 2){
+      const searchTerm = event.target.value.toLowerCase()
+      const results = this.aparcamientos.filter(parking =>
+       // console.log(parking)
+       (parking.NOMBRE.toLowerCase().includes(searchTerm) || parking.DISTRITO.toLowerCase().includes(searchTerm) ||
+       parking.BARRIO.toLowerCase().includes(searchTerm))
+     );
+     this.setState({ 
+       // searchTerm: event.target.value,
+       searchResults: results
+     })
+    } else {
+      this.setState({ 
+        // searchTerm: event.target.value,
+        searchResults: this.aparcamientos
+      })
+     }
+    
+     
+  };
 
   showCard = (reg, j, i, element) => () => {
       this.setState({ 
@@ -33,13 +61,19 @@ export default class ShowAll extends Component{
         item: element ? element : "No information available."
       })
     
-    console.log(this.state.activeIndex, " ", j, " ", i)
+    // console.log(this.state.activeIndex, " ", j, " ", i)
     
   };
 
   render(){
     return (
       <div className="showall">
+        <form className="searching form-inline justify-content-center">
+        {/* <FaSistrix/> */}
+          <input className="form-control col-sm-6" type="search" placeholder="Search by Name, District or Area" value={this.state.searchTerm}
+        onChange={this.handleChange} aria-label="Search"></input>
+          {/* <button className="btn btn-outline-success my-2 my-sm-0" type="submit"><FaSistrix/></button> */}
+        </form>
         <Row >
       <Table className="parkings-table">
         <thead>
@@ -53,7 +87,7 @@ export default class ShowAll extends Component{
           </tr>
         </thead>
         <tbody>
-        {this.aparcamientos.map((element, i) => {
+        {this.state.searchResults.map((element, i) => {
           const name_p = element.NOMBRE.split(".")
           
           return (
