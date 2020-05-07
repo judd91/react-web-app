@@ -2,9 +2,11 @@ import React, { Component, useState } from 'react';
 import ReactDOM from 'react-dom';
 import data from './data/treeData.js'
 import "./css/ParkingsCollapse.css"
-import { Button, CardBody, CardText, Row, Col, Collapse } from 'reactstrap';
+import { Button, CardBody, CardText, Row, Col, UncontrolledCollapse } from 'reactstrap';
 import Accordion from 'react-bootstrap/Accordion'
 import Card from 'react-bootstrap/Card'
+import {FaInfoCircle} from "react-icons/fa";
+
 
 
 export default class ParkingsCollapse extends Component {
@@ -14,15 +16,29 @@ export default class ParkingsCollapse extends Component {
     this.parkings = [];
     this.state = { 
       region:"",
-      input:"" 
+      p:"",
+      info: null
     };
   }
 
   showParkings = (parkings, reg) => () => {
-    const park = parkings.map((element, k) => { const x = element.split("."); return <p key={k}>{x[1]}</p> })
+    console.log(parkings)
+    const park = parkings.map((element, k) => { const x = element.NOMBRE.split("."); 
+    return ( 
+      <div key={k}>
+        <p >{x[1]} 
+        <Button color="link" id={"t_" + k.toString()}> <FaInfoCircle/> </Button></p>
+        <UncontrolledCollapse toggler={"#t_"+ k.toString()}>
+          <Card><p>{element.DIRECCION}</p><p>{element.DESCRIPCION}</p></Card>
+        </UncontrolledCollapse>
+      </div>
+      
+    )
+  
+    })
     this.setState({ 
       region: <h3> Parkings in {reg}: </h3>,
-      input: park
+      p: park
     })
   };
   
@@ -34,7 +50,7 @@ export default class ParkingsCollapse extends Component {
             <Accordion>
               {this.elements.map(({ name, children }, i) => {
                 const todoItems = children.map((item, j) => {
-                  this.parkings = item.children.map( (parking,k) => {return parking.NOMBRE } )                  
+                  this.parkings = item.children.map( (parking,k) => {return parking } )                  
                   return (
                   <div className="btn btn-light area" key={j} onClick={this.showParkings(this.parkings, item.name)}> {item.name} </div>
                   )
@@ -57,7 +73,11 @@ export default class ParkingsCollapse extends Component {
               })}
             </Accordion>
           </Col>
-          <Col>{this.state.region} {this.state.input}</Col>
+          <Col>{this.state.region} {this.state.p}
+            
+          
+          
+          </Col>
         </Row>
       </div>
     )
