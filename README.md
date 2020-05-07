@@ -1,6 +1,6 @@
 # React Web Application 
 
-This is a Web Application to show information of parkings in Madrid.
+This Web Application shows information of parkings in Madrid. It is just a personal project to practice with React.
 
 ## Tools and Softwares.
 1. In order to get a better format, the *.csv* file is cleaned and transformed to a *.json* file using **Python** and [pandas](https://pandas.pydata.org/). 
