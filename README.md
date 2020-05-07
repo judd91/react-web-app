@@ -8,11 +8,14 @@ This Web Application shows information of parkings in Madrid. It is just a perso
 3. The style libraries used are [bootstrap](https://getbootstrap.com/), [reactstrap](https://reactstrap.github.io/) and [react-icons](https://react-icons.github.io/react-icons/icons?name=fa).
 
 ## Functionality.
-- Searching by district, area, address or name.
+- Searching by district, area or name.
 - Show parking information by district.
 - Table with information of each parking.
 
-## Data
+## Data.
 The used dataset can be find [here](https://datos.madrid.es/portal/site/egob/) (open data portal, Ayuntamiento de Madrid)
+
+## Future work.
+Use a map API to show the location of each parking in a map.
 
 
